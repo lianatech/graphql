@@ -35,7 +35,7 @@ func TestDoJSON(t *testing.T) {
 	ctx, cancel := context.WithTimeout(ctx, 1*time.Second)
 	defer cancel()
 	var responseData map[string]interface{}
-	err := client.Run(ctx, &Request{q: "query {}"}, &responseData)
+	_, err := client.Run(ctx, &Request{q: "query {}"}, &responseData)
 	is.NoErr(err)
 	is.Equal(calls, 1) // calls
 	is.Equal(responseData["something"], "yes")
@@ -61,7 +61,7 @@ func TestDoJSONServerError(t *testing.T) {
 	ctx, cancel := context.WithTimeout(ctx, 1*time.Second)
 	defer cancel()
 	var responseData map[string]interface{}
-	err := client.Run(ctx, &Request{q: "query {}"}, &responseData)
+	_, err := client.Run(ctx, &Request{q: "query {}"}, &responseData)
 	is.Equal(calls, 1) // calls
 	is.Equal(err.Error(), "graphql: server returned a non-200 status code: 500")
 }
@@ -92,7 +92,7 @@ func TestDoJSONBadRequestErr(t *testing.T) {
 	ctx, cancel := context.WithTimeout(ctx, 1*time.Second)
 	defer cancel()
 	var responseData map[string]interface{}
-	err := client.Run(ctx, &Request{q: "query {}"}, &responseData)
+	_, err := client.Run(ctx, &Request{q: "query {}"}, &responseData)
 	is.Equal(calls, 1) // calls
 	is.Equal(err.Error(), "graphql: miscellaneous message as to why the the request was bad; another error")
 }
@@ -127,7 +127,7 @@ func TestDoJSONBadRequestErrDetails(t *testing.T) {
 	ctx, cancel := context.WithTimeout(ctx, 1*time.Second)
 	defer cancel()
 	var responseData map[string]interface{}
-	err := client.Run(ctx, &Request{q: "query {}"}, &responseData)
+	_, err := client.Run(ctx, &Request{q: "query {}"}, &responseData)
 	is.Equal(calls, 1) // calls
 	errs, ok := err.(Errors)
 	is.True(ok)
@@ -170,7 +170,7 @@ func TestQueryJSON(t *testing.T) {
 	var resp struct {
 		Value string
 	}
-	err := client.Run(ctx, req, &resp)
+	_, err := client.Run(ctx, req, &resp)
 	is.NoErr(err)
 	is.Equal(calls, 1)
 
@@ -200,7 +200,7 @@ func TestHeader(t *testing.T) {
 	var resp struct {
 		Value string
 	}
-	err := client.Run(ctx, req, &resp)
+	_, err := client.Run(ctx, req, &resp)
 	is.NoErr(err)
 	is.Equal(calls, 1)
 
